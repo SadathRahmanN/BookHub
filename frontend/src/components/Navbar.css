@@ -1,0 +1,138 @@
+/* src/components/Navbar.css */
+
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;  /* Add space between BookHub and search bar */
+}
+
+.logo span {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #ffcb05;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.search-input {
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  width: 250px;
+  margin-right: 10px;
+}
+
+.search-button {
+  background: #ff6347;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background: #ffa07a;
+}
+
+/* Centering nav links */
+.nav-links {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.nav-button {
+  background: none;
+  color: white;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+  background: #ffa07a;
+}
+
+/* Auth links (Admin, Login, Sign Up) */
+.auth-links {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.auth-button {
+  background: none;
+  color: white;
+  padding: 10px 15px;
+  margin-left: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.auth-button:hover {
+  background: #ffa07a;
+}
+
+.admin-button {
+  background: #4caf50;
+}
+
+.admin-button:hover {
+  background: #81c784;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .top-navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo {
+    margin-bottom: 10px;
+  }
+
+  .search-container {
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: space-evenly;
+    margin-top: 10px;
+  }
+
+  .auth-links {
+    width: 100%;
+    justify-content: space-evenly;
+    margin-top: 10px;
+  }
+
+  .auth-button {
+    padding: 10px 12px; /* Adjust the padding for smaller screens */
+  }
+}
