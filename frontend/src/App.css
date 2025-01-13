@@ -1,5 +1,3 @@
-/* src/App.css */
-
 /* Global Styles */
 .App {
   font-family: 'Arial', sans-serif;
@@ -57,12 +55,18 @@
 }
 
 /* Books Section */
+#books {
+  text-align: center; /* Ensure the Books Available text is centered */
+  background: rgba(0, 0, 0, 0.7); /* Semi-transparent background for the books section */
+}
+
 .books-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
   padding: 20px;
+  margin-top: 20px; /* To ensure spacing between heading and books */
 }
 
 .book-card {
@@ -86,6 +90,16 @@
   height: 200px;
   object-fit: cover;
   border-radius: 8px;
+}
+
+.book-card h3 {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.book-card p {
+  font-size: 14px;
+  color: #555;
 }
 
 /* Navbar Styles */

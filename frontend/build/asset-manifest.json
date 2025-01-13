@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.00237334.chunk.css",
+    "main.js": "/static/js/main.4ea7ee8c.chunk.js",
+    "main.js.map": "/static/js/main.4ea7ee8c.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.cef9ab07.js",
+    "runtime~main.js.map": "/static/js/runtime~main.cef9ab07.js.map",
+    "static/js/2.afef58d2.chunk.js": "/static/js/2.afef58d2.chunk.js",
+    "static/js/2.afef58d2.chunk.js.map": "/static/js/2.afef58d2.chunk.js.map",
+    "static/js/3.68d536b4.chunk.js": "/static/js/3.68d536b4.chunk.js",
+    "static/js/3.68d536b4.chunk.js.map": "/static/js/3.68d536b4.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.493f4e5a43b46069937186796d1cbfd5.js": "/precache-manifest.493f4e5a43b46069937186796d1cbfd5.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.00237334.chunk.css.map": "/static/css/main.00237334.chunk.css.map",
+    "static/media/App.css": "/static/media/background.adc7d1bb.jpg"
+  }
+}
