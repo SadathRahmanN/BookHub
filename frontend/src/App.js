@@ -11,11 +11,19 @@ import AdminDashboard from './components/dashboards/AdminDashboard';
 import ClientDashboard from './components/dashboards/ClientDashboard';
 import PatronDashboard from './components/dashboards/PatronDashboard';
 import LibrarianDashboard from './components/dashboards/LibrarianDashboard';
+import BookForm from './components/books/BookForm';
+import BorrowBook from './components/borrow/BorrowBook';
+import BorrowHistory from './components/borrow/BorrowHistory';
+import UserForm from './components/users/UserForm';
+import UserList from './components/users/UserList';
 import './App.css';
 
 function App() {
   const [formType, setFormType] = useState('home');
   const [books, setBooks] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [bookToEdit, setBookToEdit] = useState(null);
+  const [userToEdit, setUserToEdit] = useState(null);
 
   useEffect(() => {
     fetch('/api/books/')
@@ -23,6 +31,14 @@ function App() {
       .then((data) => setBooks(data))
       .catch((error) => console.error('Error fetching books:', error));
   }, []);
+
+  const handleAddUser = (newUser) => {
+    setUsers([...users, newUser]);
+  };
+
+  const handleDeleteUser = (username) => {
+    setUsers(users.filter(user => user.username !== username));
+  };
 
   const renderForm = () => {
     switch (formType) {
@@ -41,11 +57,9 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {/* Navbar visible on all pages */}
         <Navbar setFormType={setFormType} />
 
         <Routes>
-          {/* Home/Login page route */}
           <Route
             path="/"
             element={
@@ -57,7 +71,6 @@ function App() {
                   <div className="right-center">{renderForm()}</div>
                 </div>
 
-                {/* Books Section */}
                 <div id="books" className="section">
                   <h2>Books Available</h2>
                   <div className="books-list">
@@ -80,12 +93,10 @@ function App() {
                   </div>
                 </div>
 
-                {/* About Section */}
                 <div id="about" className="section">
                   <AboutUs />
                 </div>
 
-                {/* Contact Section */}
                 <div id="contact" className="section">
                   <ContactUs />
                 </div>
@@ -93,18 +104,33 @@ function App() {
             }
           />
 
-          {/* Dashboard routes */}
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route
+            path="/admin-dashboard"
+            element={<AdminDashboard setBookToEdit={setBookToEdit} setUserToEdit={setUserToEdit} />}
+          />
           <Route path="/client-dashboard" element={<ClientDashboard />} />
           <Route path="/patron-dashboard" element={<PatronDashboard />} />
           <Route path="/librarian-dashboard" element={<LibrarianDashboard />} />
+          <Route path="/book-form" element={<BookForm bookToEdit={bookToEdit} />} />
+          <Route path="/borrow-book" element={<BorrowBook />} />
+          <Route path="/borrow-history" element={<BorrowHistory />} />
+          <Route path="/user-form" element={<UserForm userToEdit={userToEdit} onSubmit={handleAddUser} />} />
+          <Route
+            path="/user-list"
+            element={
+              <UserList
+                users={users}
+                onDelete={handleDeleteUser}
+                setUserToEdit={setUserToEdit}
+              />
+            }
+          />
         </Routes>
       </div>
     </Router>
   );
 }
 
-// About Us Component
 const AboutUs = () => (
   <div className="about-us">
     <h2>About Us</h2>
@@ -115,7 +141,6 @@ const AboutUs = () => (
   </div>
 );
 
-// Contact Us Component
 const ContactUs = () => (
   <div className="contact-us">
     <h2>Contact Us</h2>
