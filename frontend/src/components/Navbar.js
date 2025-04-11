@@ -1,9 +1,20 @@
 // src/components/Navbar.js
 
 import React from 'react';
-import './Navbar.css';  // Import Navbar-specific styles
+import { useLocation, useNavigate } from 'react-router-dom';
+import './Navbar.css';
 
 const Navbar = ({ setFormType }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isDashboard = location.pathname.includes('dashboard');
+
+  const handleLogout = () => {
+    navigate('/');
+    if (setFormType) setFormType('home');
+  };
+
   return (
     <div className="top-navbar">
       {/* BookHub Heading and Icon */}
@@ -11,25 +22,33 @@ const Navbar = ({ setFormType }) => {
         <span>📚 BookHub</span>
       </div>
 
-      {/* Search bar and search icon */}
+      {/* Search bar (always visible) */}
       <div className="search-container">
         <input type="text" placeholder="Search books or users..." className="search-input" />
         <button className="search-button">🔍</button>
       </div>
 
-      {/* Navigation Links */}
-      <div className="nav-links">
-        <a href="#home" className="nav-button" onClick={() => setFormType('home')}>Home</a>
-        <a href="#books" className="nav-button">Books</a>
-        <a href="#about" className="nav-button">About Us</a>
-        <a href="#contact" className="nav-button">Contact Us</a>
-      </div>
+      {/* Navigation Links (only on home) */}
+      {!isDashboard && (
+        <div className="nav-links">
+          <a href="#home" className="nav-button" onClick={() => setFormType('home')}>Home</a>
+          <a href="#books" className="nav-button">Books</a>
+          <a href="#about" className="nav-button">About Us</a>
+          <a href="#contact" className="nav-button">Contact Us</a>
+        </div>
+      )}
 
-      {/* Admin, Login, Sign Up buttons */}
+      {/* Auth buttons or Logout */}
       <div className="auth-links">
-        <button onClick={() => setFormType('admin')} className="auth-button admin-button">Admin</button>
-        <button onClick={() => setFormType('login')} className="auth-button">Login</button>
-        <button onClick={() => setFormType('signup')} className="auth-button">Sign Up</button>
+        {isDashboard ? (
+          <button onClick={handleLogout} className="auth-button">Logout</button>
+        ) : (
+          <>
+            <button onClick={() => setFormType('admin')} className="auth-button admin-button">Admin</button>
+            <button onClick={() => setFormType('login')} className="auth-button">Login</button>
+            <button onClick={() => setFormType('signup')} className="auth-button">Sign Up</button>
+          </>
+        )}
       </div>
     </div>
   );

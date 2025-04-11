@@ -1,0 +1,92 @@
+/* src/components/dashboards/Dashboard.css */
+
+.dashboard {
+  padding: 100px 20px 40px;
+  color: #fff;
+  min-height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.dashboard h2 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.dashboard-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-content p {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.logout-button {
+  background-color: #ff5c5c;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  float: right;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.logout-button:hover {
+  background-color: #e64545;
+}
+
+.button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.dash-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dash-btn:hover {
+  transform: scale(1.05);
+}
+
+.primary {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.info {
+  background-color: #2196F3;
+  color: white;
+}
+
+.warning {
+  background-color: #ff9800;
+  color: white;
+}
+
+.danger {
+  background-color: #f44336;
+  color: white;
+}
+
+.success {
+  background-color: #2e7d32;
+  color: white;
+}
