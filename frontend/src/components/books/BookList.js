@@ -1,4 +1,4 @@
-// src/components/BookList.js
+// src/components/books/BookList.js
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
