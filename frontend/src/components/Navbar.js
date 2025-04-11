@@ -44,7 +44,6 @@ const Navbar = ({ setFormType }) => {
           <button onClick={handleLogout} className="auth-button">Logout</button>
         ) : (
           <>
-            <button onClick={() => setFormType('admin')} className="auth-button admin-button">Admin</button>
             <button onClick={() => setFormType('login')} className="auth-button">Login</button>
             <button onClick={() => setFormType('signup')} className="auth-button">Sign Up</button>
           </>

@@ -2,15 +2,25 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LoginForm.css';  // Import the LoginForm-specific styles
+import './LoginForm.css'; // Import the LoginForm-specific styles
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate inputs
+    if (!username || !password) {
+      setError('Please enter both username and password.');
+      return;
+    }
+
+    // Clear error before processing
+    setError('');
 
     // Simulate role-based login logic
     let userRole = '';
@@ -47,6 +57,8 @@ const LoginForm = () => {
           required
         />
         <button type="submit">Login</button>
+
+        {error && <div className="error">{error}</div>}
       </form>
     </div>
   );
