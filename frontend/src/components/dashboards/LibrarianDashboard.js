@@ -7,11 +7,14 @@ const LibrarianDashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => navigate('/');
-  const handleAddBook = () => alert('Add Book clicked!');
-  const handleEditBook = () => alert('Edit Book clicked!');
-  const handleDeleteBook = () => alert('Delete Book clicked!');
-  const handleViewInventory = () => alert('View Inventory clicked!');
-  const handleApproveClientPatron = () => alert('Approve Client/Patron clicked!');
+  const handleAddBook = () => navigate('/book-form');
+  const handleEditBook = () => navigate('/edit-book');
+  const handleDeleteBook = () => navigate('/delete-book');
+  const handleViewInventory = () => navigate('/view-inventory');
+  const handleApproveClientPatron = () => navigate('/approve-client-patron');
+  const handleManageBorrowedBooks = () => navigate('/borrowed-books');
+  const handleManageReturnRequests = () => navigate('/return-requests');
+  const handleManageExtensionRequests = () => navigate('/extension-requests');
 
   return (
     <div className="dashboard">
@@ -24,6 +27,9 @@ const LibrarianDashboard = () => {
           <button onClick={handleDeleteBook} className="dash-btn danger">📛 Delete Book</button>
           <button onClick={handleViewInventory} className="dash-btn warning">📚 View Inventory</button>
           <button onClick={handleApproveClientPatron} className="dash-btn success">✅ Approve Client/Patron</button>
+          <button onClick={handleManageBorrowedBooks} className="dash-btn primary">📚 Manage Borrowed Books</button>
+          <button onClick={handleManageReturnRequests} className="dash-btn info">🔄 Manage Return Requests</button>
+          <button onClick={handleManageExtensionRequests} className="dash-btn warning">⏳ Manage Extension Requests</button>
         </div>
       </div>
     </div>

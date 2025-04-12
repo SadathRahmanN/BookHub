@@ -12,6 +12,7 @@ import ClientDashboard from './components/dashboards/ClientDashboard';
 import PatronDashboard from './components/dashboards/PatronDashboard';
 import LibrarianDashboard from './components/dashboards/LibrarianDashboard';
 import BookForm from './components/books/BookForm';
+import BookList from './components/books/BookList';
 import BorrowBook from './components/borrow/BorrowBook';
 import BorrowHistory from './components/borrow/BorrowHistory';
 import UserForm from './components/users/UserForm';
@@ -24,6 +25,7 @@ function App() {
   const [users, setUsers] = useState([]);
   const [bookToEdit, setBookToEdit] = useState(null);
   const [userToEdit, setUserToEdit] = useState(null);
+  const [borrowList, setBorrowList] = useState([]);
 
   useEffect(() => {
     fetch('/api/books/')
@@ -38,6 +40,10 @@ function App() {
 
   const handleDeleteUser = (username) => {
     setUsers(users.filter(user => user.username !== username));
+  };
+
+  const handleBorrowBook = (borrowEntry) => {
+    setBorrowList([...borrowList, borrowEntry]);
   };
 
   const renderForm = () => {
@@ -72,25 +78,7 @@ function App() {
                 </div>
 
                 <div id="books" className="section">
-                  <h2>Books Available</h2>
-                  <div className="books-list">
-                    {books.length > 0 ? (
-                      books.map((book) => (
-                        <div className="book-card" key={book.id}>
-                          <img
-                            src={book.image_url}
-                            alt={book.title}
-                            className="book-image"
-                          />
-                          <h3>{book.title}</h3>
-                          <p>Author: {book.author}</p>
-                          <p>Publication Date: {book.publication_date}</p>
-                        </div>
-                      ))
-                    ) : (
-                      <p>Loading books...</p>
-                    )}
-                  </div>
+                  <BookList />
                 </div>
 
                 <div id="about" className="section">
@@ -112,8 +100,9 @@ function App() {
           <Route path="/patron-dashboard" element={<PatronDashboard />} />
           <Route path="/librarian-dashboard" element={<LibrarianDashboard />} />
           <Route path="/book-form" element={<BookForm bookToEdit={bookToEdit} />} />
-          <Route path="/borrow-book" element={<BorrowBook />} />
-          <Route path="/borrow-history" element={<BorrowHistory />} />
+          <Route path="/book-list" element={<BookList />} />
+          <Route path="/borrow-book" element={<BorrowBook onBorrow={handleBorrowBook} />} />
+          <Route path="/borrow-history" element={<BorrowHistory borrowList={borrowList} />} />
           <Route path="/user-form" element={<UserForm userToEdit={userToEdit} onSubmit={handleAddUser} />} />
           <Route
             path="/user-list"

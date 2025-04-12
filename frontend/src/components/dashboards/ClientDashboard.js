@@ -7,7 +7,7 @@ const ClientDashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => navigate('/');
-  const handleViewBooks = () => alert('View Books clicked!');
+  const handleViewBooks = () => navigate('/books');
   const handleSearchBooks = () => alert('Search Books clicked!');
   const handleUpdateProfile = () => alert('Update Profile clicked!');
 

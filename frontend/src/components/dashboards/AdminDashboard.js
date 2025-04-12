@@ -7,12 +7,15 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => navigate('/');
-  const handleAddUser = () => alert('Add User clicked!');
-  const handleEditUser = () => alert('Edit User clicked!');
-  const handleDeleteUser = () => alert('Delete User clicked!');
-  const handleViewUsers = () => alert('View All Users clicked!');
-  const handleApproveLibrarian = () => alert('Approve Librarian clicked!');
-  const handleApproveClientPatron = () => alert('Approve Client/Patron clicked!');
+  const handleAddUser = () => navigate('/user-form');
+  const handleEditUser = () => navigate('/user-list');
+  const handleDeleteUser = () => navigate('/user-list');
+  const handleViewUsers = () => navigate('/user-list');
+  const handleApproveLibrarian = () => navigate('/approve-librarian');
+  const handleApproveClientPatron = () => navigate('/approve-client-patron');
+  const handleManageBorrowedBooks = () => navigate('/borrowed-books');
+  const handleManageReturnRequests = () => navigate('/return-requests');
+  const handleManageExtensionRequests = () => navigate('/extension-requests');
 
   return (
     <div className="dashboard">
@@ -26,6 +29,9 @@ const AdminDashboard = () => {
           <button onClick={handleViewUsers} className="dash-btn warning">📜 View All Users</button>
           <button onClick={handleApproveLibrarian} className="dash-btn success">✅ Approve Librarian</button>
           <button onClick={handleApproveClientPatron} className="dash-btn success">🧾 Approve Client/Patron</button>
+          <button onClick={handleManageBorrowedBooks} className="dash-btn primary">📚 Manage Borrowed Books</button>
+          <button onClick={handleManageReturnRequests} className="dash-btn info">🔄 Manage Return Requests</button>
+          <button onClick={handleManageExtensionRequests} className="dash-btn warning">⏳ Manage Extension Requests</button>
         </div>
       </div>
     </div>

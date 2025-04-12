@@ -1,22 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './UserForm.css';
 
-const UserForm = ({ onSubmit }) => {
+const UserForm =({ userToEdit, onSubmit }) => {
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('client');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (userToEdit) {
+      setUsername(userToEdit.username || '');
+      setRole(userToEdit.role || 'client');
+    }
+  }, [userToEdit]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (username && role) {
-      onSubmit({ username, role });
+    const newUser = { username, role };
+
+    try {
+      const response = await fetch(
+        userToEdit ? `/api/users/${userToEdit.id}/` : '/api/users/',
+        {
+          method: userToEdit ? 'PUT' : 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newUser),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to submit user data');
+      }
+
+      if (onSubmit) onSubmit(newUser); // Optional local state update
+
       setUsername('');
       setRole('client');
+      navigate('/admin-dashboard');
+    } catch (error) {
+      console.error('Error submitting user:', error);
     }
   };
 
   return (
     <div className="user-form-container">
-      <h2>Add User</h2>
+      <h2>{userToEdit ? 'Edit User' : 'Add User'}</h2>
       <form onSubmit={handleSubmit} className="user-form">
         <input
           type="text"
@@ -31,7 +61,7 @@ const UserForm = ({ onSubmit }) => {
           <option value="librarian">Librarian</option>
           <option value="admin">Admin</option>
         </select>
-        <button type="submit">Add User</button>
+        <button type="submit">{userToEdit ? 'Update User' : 'Add User'}</button>
       </form>
     </div>
   );
