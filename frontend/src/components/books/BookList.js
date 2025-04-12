@@ -40,9 +40,12 @@ const BookList = () => {
         {books.length > 0 ? (
           books.map(book => (
             <div className="book-item" key={book.id}>
-              {book.image_url && (
+              {book.image_url ? (
                 <img src={book.image_url} alt={book.title} className="book-image" />
+              ) : (
+                <div className="no-image">No Image</div>
               )}
+
               <h3>{book.title}</h3>
               <p><strong>Author:</strong> {book.author}</p>
               <p><strong>Genre:</strong> {book.genre}</p>
