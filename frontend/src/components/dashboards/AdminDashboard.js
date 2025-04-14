@@ -4,12 +4,15 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 
-const AdminDashboard = () => {
+const AdminDashboard = ({ setUserToEdit }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => navigate('/');
   const handleAddUser = () => navigate('/user-form');
-  const handleEditUser = () => navigate('/user-list');
+  const handleEditUser = () => {
+    setUserToEdit(null);
+    navigate('/user-list');
+  };
   const handleDeleteUser = () => navigate('/user-list');
   const handleViewUsers = () => navigate('/user-list');
   const handleApproveLibrarian = () => navigate('/approve-librarian');
@@ -17,6 +20,7 @@ const AdminDashboard = () => {
   const handleManageBorrowedBooks = () => navigate('/borrowed-books');
   const handleManageReturnRequests = () => navigate('/return-requests');
   const handleManageExtensionRequests = () => navigate('/extension-requests');
+  const handleIssuedBooks = () => navigate('/issued-books');
 
   return (
     <div className="dashboard">
@@ -33,6 +37,7 @@ const AdminDashboard = () => {
           <button onClick={handleManageBorrowedBooks} className="dash-btn primary">📚 Manage Borrowed Books</button>
           <button onClick={handleManageReturnRequests} className="dash-btn info">🔄 Manage Return Requests</button>
           <button onClick={handleManageExtensionRequests} className="dash-btn warning">⏳ Manage Extension Requests</button>
+          <button onClick={handleIssuedBooks} className="dash-btn info">📘 Issued Books</button>
         </div>
       </div>
     </div>

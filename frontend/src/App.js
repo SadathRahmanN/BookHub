@@ -12,15 +12,19 @@ import ClientDashboard from './components/dashboards/ClientDashboard';
 import PatronDashboard from './components/dashboards/PatronDashboard';
 import LibrarianDashboard from './components/dashboards/LibrarianDashboard';
 import ApproveLibrarian from './components/dashboards/ApproveLibrarian';
+import ApproveClientPatron from './components/dashboards/ApproveClientPatron';
+import BorrowedBooks from './components/borrow/BorrowedBook';
+import ReturnRequests from './components/requests/ReturnRequests';
+import ExtensionRequests from './components/requests/ExtensionRequests';
 import BookForm from './components/books/BookForm';
 import BookList from './components/books/BookList';
-import BorrowBook from './components/borrow/BorrowBook';
+import BorrowBook from './components/borrow/BorrowedBook';
 import BorrowHistory from './components/borrow/BorrowHistory';
 import UserForm from './components/users/UserForm';
 import UserList from './components/users/UserList';
+import IssuedBooks from './components/shared/IssuedBooks'; // 🔹 NEW Import
 import './App.css';
 
-// Moved above App function to avoid JSX parsing issues
 const AboutUs = () => (
   <div className="about-us">
     <h2>About Us</h2>
@@ -58,7 +62,7 @@ function App() {
     fetch('/api/books/')
       .then((response) => response.json())
       .then((data) => {
-        // Handle fetched books if needed
+        // You can store books in a state if needed
       })
       .catch((error) => console.error('Error fetching books:', error));
   }, []);
@@ -120,18 +124,26 @@ function App() {
               </>
             }
           />
+
+          {/* Dashboards */}
           <Route
             path="/admin-dashboard"
-            element={<AdminDashboard setBookToEdit={setBookToEdit} setUserToEdit={setUserToEdit} />}
+            element={
+              <AdminDashboard
+                setUserToEdit={setUserToEdit}
+                setBookToEdit={setBookToEdit}
+              />
+            }
           />
           <Route path="/client-dashboard" element={<ClientDashboard />} />
           <Route path="/patron-dashboard" element={<PatronDashboard />} />
           <Route path="/librarian-dashboard" element={<LibrarianDashboard />} />
-          <Route path="/book-form" element={<BookForm bookToEdit={bookToEdit} />} />
-          <Route path="/book-list" element={<BookList />} />
-          <Route path="/borrow-book" element={<BorrowBook onBorrow={handleBorrowBook} />} />
-          <Route path="/borrow-history" element={<BorrowHistory borrowList={borrowList} />} />
-          <Route path="/user-form" element={<UserForm userToEdit={userToEdit} onSubmit={handleAddUser} />} />
+
+          {/* User Management */}
+          <Route
+            path="/user-form"
+            element={<UserForm userToEdit={userToEdit} onSubmit={handleAddUser} />}
+          />
           <Route
             path="/user-list"
             element={
@@ -142,7 +154,33 @@ function App() {
               />
             }
           />
+
+          {/* Book Management */}
+          <Route
+            path="/book-form"
+            element={<BookForm bookToEdit={bookToEdit} />}
+          />
+          <Route path="/book-list" element={<BookList />} />
+
+          {/* Borrowing & History */}
+          <Route
+            path="/borrow-book"
+            element={<BorrowBook onBorrow={handleBorrowBook} />}
+          />
+          <Route
+            path="/borrow-history"
+            element={<BorrowHistory borrowList={borrowList} />}
+          />
+
+          {/* Approval and Requests */}
           <Route path="/approve-librarian" element={<ApproveLibrarian />} />
+          <Route path="/approve-client-patron" element={<ApproveClientPatron />} />
+          <Route path="/borrowed-books" element={<BorrowedBooks />} />
+          <Route path="/return-requests" element={<ReturnRequests />} />
+          <Route path="/extension-requests" element={<ExtensionRequests />} />
+
+          {/* 🔹 New Route for Issued Books */}
+          <Route path="/issued-books" element={<IssuedBooks />} />
         </Routes>
       </div>
     </Router>
