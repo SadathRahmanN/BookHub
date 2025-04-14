@@ -1,3 +1,4 @@
+# backend/books/models.py
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -21,7 +22,7 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
     publication_date = models.DateField()
-    image_url = models.URLField(null=True, blank=True)  # Made image_url nullable
+    image_url = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return self.title

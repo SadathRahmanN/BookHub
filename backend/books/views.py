@@ -1,23 +1,39 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth import authenticate
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, get_user_model
 from rest_framework.permissions import IsAdminUser
 from .models import Book
 from .serializers import BookSerializer
 
-User = get_user_model()  # Use the custom User model if applicable
+User = get_user_model()  # Use the custom User model
 
-# Fetch all books
+# Fetch all books or filter by query
 @api_view(['GET'])
 def books_api(request):
     """
-    Fetch all books from the database.
+    Fetch all books or search by title/author using 'q' query param.
     """
-    books = Book.objects.all()
+    query = request.query_params.get('q', '')
+    if query:
+        books = Book.objects.filter(title__icontains=query) | Book.objects.filter(author__icontains=query)
+    else:
+        books = Book.objects.all()
     serializer = BookSerializer(books, many=True)
     return Response(serializer.data)
+
+# Get single book by ID
+@api_view(['GET'])
+def get_book(request, book_id):
+    """
+    Fetch a single book by ID.
+    """
+    try:
+        book = Book.objects.get(id=book_id)
+        serializer = BookSerializer(book)
+        return Response(serializer.data)
+    except Book.DoesNotExist:
+        return Response({"message": "Book not found."}, status=status.HTTP_404_NOT_FOUND)
 
 # Login and signup functionality
 @api_view(['POST'])
@@ -30,8 +46,7 @@ def login_signup_api(request):
     password = request.data.get('password')
 
     if action == "signup":
-        # Signup logic
-        role = request.data.get('role', 'client')  # Default role is 'client'
+        role = request.data.get('role', 'client')
         if User.objects.filter(username=username).exists():
             return Response({"message": "Username already exists."}, status=status.HTTP_400_BAD_REQUEST)
         user = User.objects.create_user(username=username, password=password)
@@ -40,7 +55,6 @@ def login_signup_api(request):
         return Response({"message": "User created successfully!"}, status=status.HTTP_201_CREATED)
 
     elif action == "login":
-        # Login logic
         user = authenticate(username=username, password=password)
         if user:
             return Response({"message": "Login successful!", "role": user.role}, status=status.HTTP_200_OK)
@@ -53,9 +67,6 @@ def login_signup_api(request):
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def add_book(request):
-    """
-    Add a new book to the database (Admin only).
-    """
     serializer = BookSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -66,9 +77,6 @@ def add_book(request):
 @api_view(['PUT'])
 @permission_classes([IsAdminUser])
 def edit_book(request, book_id):
-    """
-    Edit an existing book in the database (Admin only).
-    """
     try:
         book = Book.objects.get(id=book_id)
     except Book.DoesNotExist:
@@ -84,9 +92,6 @@ def edit_book(request, book_id):
 @api_view(['DELETE'])
 @permission_classes([IsAdminUser])
 def delete_book(request, book_id):
-    """
-    Delete a book from the database (Admin only).
-    """
     try:
         book = Book.objects.get(id=book_id)
         book.delete()
@@ -98,20 +103,25 @@ def delete_book(request, book_id):
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def list_users(request):
-    """
-    List all users (Admin only).
-    """
     users = User.objects.all()
     user_data = [{"id": user.id, "username": user.username, "role": user.role} for user in users]
     return Response(user_data)
+
+# Get single user (Admin only)
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def get_user(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        data = {"id": user.id, "username": user.username, "role": user.role}
+        return Response(data)
+    except User.DoesNotExist:
+        return Response({"message": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
 # Update a user (Admin only)
 @api_view(['PUT'])
 @permission_classes([IsAdminUser])
 def update_user(request, user_id):
-    """
-    Update a user's information (Admin only).
-    """
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
@@ -126,13 +136,9 @@ def update_user(request, user_id):
 @api_view(['DELETE'])
 @permission_classes([IsAdminUser])
 def delete_user(request, user_id):
-    """
-    Delete a user from the database (Admin only).
-    """
     try:
         user = User.objects.get(id=user_id)
         user.delete()
         return Response({"message": "User deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
     except User.DoesNotExist:
         return Response({"message": "User not found."}, status=status.HTTP_404_NOT_FOUND)
-

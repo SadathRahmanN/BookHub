@@ -129,6 +129,9 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',  # Location of React build's static assets
 ]
 
+# Location for collectstatic to collect everything into one directory (used in production)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
