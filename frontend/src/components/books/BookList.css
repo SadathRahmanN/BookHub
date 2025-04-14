@@ -1,11 +1,19 @@
-/* Book List Wrapper to push content below the navbar */
 .book-list {
-  margin-top: 150px; /* To account for the fixed navbar */
-  padding: 20px;
+  padding: 100px 20px 40px;
   color: #fff;
+  min-height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  padding-top: 80px;
 }
 
-/* Books container to display items in a flex layout */
+.book-list h2 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #f0f0f0;
+}
+
+/* Wrapper for all book cards */
 .books-container {
   display: flex;
   flex-wrap: wrap;
@@ -13,24 +21,25 @@
   justify-content: center;
 }
 
-/* Individual Book Item styles */
+/* Individual Book Card */
 .book-item {
-  background-color: rgba(0, 0, 0, 0.7);
+  background: rgba(255, 255, 255, 0.1);
   color: #fff;
-  padding: 15px;
-  border-radius: 12px;
+  padding: 20px;
+  border-radius: 15px;
   width: 300px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .book-item:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
 }
 
-/* Book image styling */
+/* Book Image */
 .book-image {
   width: 100%;
   max-width: 200px;
@@ -41,7 +50,7 @@
   box-shadow: 0 2px 6px rgba(255, 255, 255, 0.2);
 }
 
-/* Placeholder for missing book image */
+/* Placeholder when no image is available */
 .no-image {
   width: 100%;
   height: 250px;
@@ -55,59 +64,73 @@
   margin-bottom: 10px;
 }
 
-/* Book title styling */
+/* Text styles */
 .book-item h3 {
   font-size: 1.5em;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  color: #f0f0f0;
 }
 
-/* Book description styling */
 .book-item p {
   font-size: 1.1em;
   margin: 5px 0;
 }
 
-/* Book Actions buttons styling */
+/* Button container */
 .book-actions {
   margin-top: 10px;
 }
 
+/* Buttons base styles */
 .book-actions button {
   margin: 5px;
-  padding: 6px 12px;
+  padding: 8px 14px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 1em;
-  transition: background-color 0.3s;
+  transition: transform 0.2s, background-color 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Edit button */
+.book-actions button:hover {
+  transform: scale(1.05);
+}
+
+/* Edit */
 .edit-btn {
-  background-color: #007bff;
+  background-color: #2196F3;
   color: white;
 }
 
 .edit-btn:hover {
-  background-color: #0056b3;
+  background-color: #1976d2;
 }
 
-/* Delete button */
+/* Delete */
 .delete-btn {
-  background-color: #dc3545;
+  background-color: #f44336;
   color: white;
 }
 
 .delete-btn:hover {
-  background-color: #b02a37;
+  background-color: #d32f2f;
 }
 
-/* View button */
+/* View */
 .view-btn {
-  background-color: #28a745;
+  background-color: #4CAF50;
   color: white;
 }
 
 .view-btn:hover {
-  background-color: #1e7e34;
+  background-color: #388e3c;
+}
+
+/* Error message */
+.error {
+  text-align: center;
+  color: #ff6b6b;
+  font-size: 1.1rem;
+  margin-top: 20px;
 }
