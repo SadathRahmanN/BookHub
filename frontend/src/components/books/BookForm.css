@@ -1,40 +1,60 @@
 /* Book Form Container */
 .book-form-container {
-  background-color: rgba(0, 0, 0, 0.7);
+  background: linear-gradient(to right, #1f4037, #99f2c8);
   color: #fff;
   padding: 80px;
-  border-radius: 10px;
+  border-radius: 16px;
   width: 90%;
   max-width: 500px;
-  margin: 100px auto 20px; /* Ensure content starts below navbar */
+  margin: 120px auto 30px;
   text-align: center;
-  box-sizing: border-box;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Input styles for Book Form */
-.book-form input {
+/* Heading */
+.book-form-container h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+/* Input styles */
+.book-form input[type="text"],
+.book-form input[type="file"] {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 5px;
+  padding: 14px;
+  margin: 10px 0 20px;
+  border-radius: 8px;
   border: none;
-  box-sizing: border-box;
-  background-color: #fff;
+  background-color: #ffffff;
   color: #000;
+  box-sizing: border-box;
+  font-size: 1rem;
 }
 
-/* Button styles for Book Form */
+/* Button */
 .book-form button {
-  padding: 12px 24px;
-  background-color: #28a745;
+  padding: 14px 30px;
+  background-color: #006400;
   border: none;
   color: white;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   margin-top: 10px;
-  font-size: 16px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
 .book-form button:hover {
-  background-color: #218838;
+  background-color: #228b22;
+}
+
+/* Image Preview */
+.book-image-preview {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
