@@ -2,21 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './UserForm.css';
 
-const UserForm =({ userToEdit, onSubmit }) => {
+const UserForm = ({ userToEdit, onSubmit }) => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
   const [role, setRole] = useState('client');
   const navigate = useNavigate();
 
   useEffect(() => {
     if (userToEdit) {
       setUsername(userToEdit.username || '');
+      setEmail(userToEdit.email || '');
+      setPhone(userToEdit.phone || '');
       setRole(userToEdit.role || 'client');
     }
   }, [userToEdit]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newUser = { username, role };
+    const newUser = { username, email, password, phone, role };
 
     try {
       const response = await fetch(
@@ -34,9 +39,12 @@ const UserForm =({ userToEdit, onSubmit }) => {
         throw new Error('Failed to submit user data');
       }
 
-      if (onSubmit) onSubmit(newUser); // Optional local state update
+      if (onSubmit) onSubmit(newUser);
 
       setUsername('');
+      setEmail('');
+      setPassword('');
+      setPhone('');
       setRole('client');
       navigate('/admin-dashboard');
     } catch (error) {
@@ -54,6 +62,26 @@ const UserForm =({ userToEdit, onSubmit }) => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required={!userToEdit}
+        />
+        <input
+          type="text"
+          placeholder="Phone Number"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
         />
         <select value={role} onChange={(e) => setRole(e.target.value)}>
           <option value="client">Client</option>
