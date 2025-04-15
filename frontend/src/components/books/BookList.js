@@ -81,8 +81,13 @@ const BookList = () => {
               <p><strong>ISBN:</strong> {book.isbn}</p>
 
               <div className="book-actions">
+                {/* Edit Book button */}
                 <button className="edit-btn" onClick={() => handleEdit(book)}>✏️ Edit</button>
+
+                {/* Delete Book button */}
                 <button className="delete-btn" onClick={() => handleDelete(book.id)}>🗑️ Delete</button>
+
+                {/* View Book details button */}
                 <button className="view-btn" onClick={() => handleViewBook(book)}>👁️ View</button>
               </div>
             </div>

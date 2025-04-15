@@ -23,6 +23,8 @@ import BorrowHistory from './components/borrow/BorrowHistory';
 import UserForm from './components/users/UserForm';
 import UserList from './components/users/UserList';
 import IssuedBooks from './components/shared/IssuedBooks'; // 🔹 NEW Import
+import SearchBooks from './components/books/SearchBooks'; // 🔹 NEW Import
+import UpdateProfile from './components/users/UpdateProfile'; // 🔹 NEW Import
 import './App.css';
 
 const AboutUs = () => (
@@ -181,6 +183,12 @@ function App() {
 
           {/* 🔹 New Route for Issued Books */}
           <Route path="/issued-books" element={<IssuedBooks />} />
+
+          {/* 🔹 New Route for Search Books */}
+          <Route path="/search-books" element={<SearchBooks />} />
+
+          {/* 🔹 New Route for Update Profile */}
+          <Route path="/update-profile" element={<UpdateProfile />} />
         </Routes>
       </div>
     </Router>
