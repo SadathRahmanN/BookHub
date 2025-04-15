@@ -1,7 +1,5 @@
-// src/App.js
-
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import QuoteSection from './components/QuoteSection';
 import LoginForm from './components/LoginForm';
@@ -13,18 +11,18 @@ import PatronDashboard from './components/dashboards/PatronDashboard';
 import LibrarianDashboard from './components/dashboards/LibrarianDashboard';
 import ApproveLibrarian from './components/dashboards/ApproveLibrarian';
 import ApproveClientPatron from './components/dashboards/ApproveClientPatron';
-import BorrowedBooks from './components/borrow/BorrowBook';
+import BorrowBook from './components/borrow/BorrowBook';
+import BorrowHistory from './components/borrow/BorrowHistory';
+import BorrowedBooks from './components/borrow/BorrowedBooks';
 import ReturnRequests from './components/requests/ReturnRequests';
 import ExtensionRequests from './components/requests/ExtensionRequests';
 import BookForm from './components/books/BookForm';
 import BookList from './components/books/BookList';
-import BorrowBook from './components/borrow/BorrowBook';
-import BorrowHistory from './components/borrow/BorrowHistory';
 import UserForm from './components/users/UserForm';
 import UserList from './components/users/UserList';
-import IssuedBooks from './components/shared/IssuedBooks'; // 🔹 NEW Import
-import SearchBooks from './components/books/SearchBooks'; // 🔹 NEW Import
-import UpdateProfile from './components/users/UpdateProfile'; // 🔹 NEW Import
+import IssuedBooks from './components/shared/IssuedBooks';
+import SearchBooks from './components/books/SearchBooks';
+import UpdateProfile from './components/users/UpdateProfile';
 import './App.css';
 
 const AboutUs = () => (
@@ -59,14 +57,16 @@ function App() {
   const [bookToEdit, setBookToEdit] = useState(null);
   const [userToEdit, setUserToEdit] = useState(null);
   const [borrowList, setBorrowList] = useState([]);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+
+  const handleLogin = (user) => {
+    setLoggedInUser(user);
+  };
 
   useEffect(() => {
     fetch('/api/books/')
-      .then((response) => response.json())
-      .then((data) => {
-        // You can store books in a state if needed
-      })
-      .catch((error) => console.error('Error fetching books:', error));
+      .then((res) => res.json())
+      .catch((err) => console.error('Book fetch error:', err));
   }, []);
 
   const handleAddUser = (newUser) => {
@@ -84,14 +84,30 @@ function App() {
   const renderForm = () => {
     switch (formType) {
       case 'login':
-        return <LoginForm />;
+        return <LoginForm onLogin={handleLogin} />;
       case 'admin':
         return <AdminForm />;
       case 'signup':
         return <SignUpForm />;
       case 'home':
       default:
-        return <LoginForm />;
+        return <LoginForm onLogin={handleLogin} />;
+    }
+  };
+
+  const RedirectDashboard = () => {
+    if (!loggedInUser) return <Navigate to="/" />;
+    switch (loggedInUser.role) {
+      case 'Admin':
+        return <Navigate to="/admin-dashboard" />;
+      case 'Client':
+        return <Navigate to="/client-dashboard" />;
+      case 'Patron':
+        return <Navigate to="/patron-dashboard" />;
+      case 'Librarian':
+        return <Navigate to="/librarian-dashboard" />;
+      default:
+        return <Navigate to="/" />;
     }
   };
 
@@ -101,6 +117,7 @@ function App() {
         <Navbar setFormType={setFormType} />
 
         <Routes>
+          {/* Home Route */}
           <Route
             path="/"
             element={
@@ -111,83 +128,49 @@ function App() {
                   </div>
                   <div className="right-center">{renderForm()}</div>
                 </div>
-
-                <div id="books" className="section">
-                  <BookList />
-                </div>
-
-                <div id="about" className="section">
-                  <AboutUs />
-                </div>
-
-                <div id="contact" className="section">
-                  <ContactUs />
-                </div>
+                <div id="books" className="section"><BookList /></div>
+                <div id="about" className="section"><AboutUs /></div>
+                <div id="contact" className="section"><ContactUs /></div>
               </>
             }
           />
 
+          {/* Auth Routes */}
+          <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
+          <Route path="/signup" element={<SignUpForm />} />
+          <Route path="/admin" element={<AdminForm />} />
+
+          {/* Redirect to dashboard after login */}
+          <Route path="/redirect" element={<RedirectDashboard />} />
+
           {/* Dashboards */}
-          <Route
-            path="/admin-dashboard"
-            element={
-              <AdminDashboard
-                setUserToEdit={setUserToEdit}
-                setBookToEdit={setBookToEdit}
-              />
-            }
-          />
+          <Route path="/admin-dashboard" element={<AdminDashboard setUserToEdit={setUserToEdit} setBookToEdit={setBookToEdit} />} />
           <Route path="/client-dashboard" element={<ClientDashboard />} />
           <Route path="/patron-dashboard" element={<PatronDashboard />} />
           <Route path="/librarian-dashboard" element={<LibrarianDashboard />} />
 
           {/* User Management */}
-          <Route
-            path="/user-form"
-            element={<UserForm userToEdit={userToEdit} onSubmit={handleAddUser} />}
-          />
-          <Route
-            path="/user-list"
-            element={
-              <UserList
-                users={users}
-                onDelete={handleDeleteUser}
-                setUserToEdit={setUserToEdit}
-              />
-            }
-          />
+          <Route path="/user-form" element={<UserForm userToEdit={userToEdit} onSubmit={handleAddUser} />} />
+          <Route path="/user-list" element={<UserList users={users} onDelete={handleDeleteUser} setUserToEdit={setUserToEdit} />} />
 
           {/* Book Management */}
-          <Route
-            path="/book-form"
-            element={<BookForm bookToEdit={bookToEdit} />}
-          />
+          <Route path="/book-form" element={<BookForm bookToEdit={bookToEdit} />} />
           <Route path="/book-list" element={<BookList />} />
 
           {/* Borrowing & History */}
-          <Route
-            path="/borrow-book"
-            element={<BorrowBook onBorrow={handleBorrowBook} />}
-          />
-          <Route
-            path="/borrow-history"
-            element={<BorrowHistory borrowList={borrowList} />}
-          />
+          <Route path="/borrow-book" element={<BorrowBook onBorrow={handleBorrowBook} />} />
+          <Route path="/borrow-history" element={<BorrowHistory borrowList={borrowList} />} />
 
           {/* Approval and Requests */}
           <Route path="/approve-librarian" element={<ApproveLibrarian />} />
           <Route path="/approve-client-patron" element={<ApproveClientPatron />} />
-          <Route path="/borrowed-books" element={<BorrowedBooks />} />
+          <Route path="/borrowed-books" element={<BorrowedBooks loggedInUser={loggedInUser} />} />
           <Route path="/return-requests" element={<ReturnRequests />} />
           <Route path="/extension-requests" element={<ExtensionRequests />} />
 
-          {/* 🔹 New Route for Issued Books */}
+          {/* Shared */}
           <Route path="/issued-books" element={<IssuedBooks />} />
-
-          {/* 🔹 New Route for Search Books */}
           <Route path="/search-books" element={<SearchBooks />} />
-
-          {/* 🔹 New Route for Update Profile */}
           <Route path="/update-profile" element={<UpdateProfile />} />
         </Routes>
       </div>
