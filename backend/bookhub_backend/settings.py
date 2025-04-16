@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url  # Add this line to use the URL parser
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,11 +80,12 @@ WSGI_APPLICATION = 'bookhub_backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(
+        "postgresql://Bookhub_Db_owner:npg_jZ6yPeJ9EvOc@ep-withered-meadow-a4mmvqk2-pooler.us-east-1.aws.neon.tech/Bookhub_Db?sslmode=require",
+        conn_max_age=600
+    )
 }
+
 
 # Custom user model
 AUTH_USER_MODEL = 'books.User'  # Point to the custom User model in books app

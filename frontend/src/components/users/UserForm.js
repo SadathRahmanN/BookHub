@@ -53,43 +53,64 @@ const UserForm = ({ userToEdit, onSubmit }) => {
   };
 
   return (
-    <div className="user-form-container">
+    <div className="update-profile">
       <h2>{userToEdit ? 'Edit User' : 'Add User'}</h2>
-      <form onSubmit={handleSubmit} className="user-form">
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required={!userToEdit}
-        />
-        <input
-          type="text"
-          placeholder="Phone Number"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="client">Client</option>
-          <option value="patron">Patron</option>
-          <option value="librarian">Librarian</option>
-          <option value="admin">Admin</option>
-        </select>
-        <button type="submit">{userToEdit ? 'Update User' : 'Add User'}</button>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Username</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required={!userToEdit}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Phone Number</label>
+          <input
+            type="text"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Role</label>
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <option value="client">Client</option>
+            <option value="patron">Patron</option>
+            <option value="librarian">Librarian</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <button type="submit" className="update-btn">
+          {userToEdit ? 'Update User' : 'Add User'}
+        </button>
       </form>
     </div>
   );
