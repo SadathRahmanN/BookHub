@@ -2,15 +2,34 @@ from rest_framework import serializers
 from .models import Book, User
 
 class BookSerializer(serializers.ModelSerializer):
+    # Optional: Show full image URL
+    book_image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'publication_date', 'image_url']
+        fields = [
+            'id', 'title', 'author', 'publication_date', 'category', 'isbn',
+            'binding', 'publisher', 'edition', 'number_of_pages', 'language',
+            'book_image', 'book_image_url', 'is_borrowed', 'borrowed_by'
+        ]
+
+    def get_book_image_url(self, obj):
+        request = self.context.get('request')
+        if obj.book_image and request:
+            return request.build_absolute_uri(obj.book_image.url)
+        return None
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'phone', 'role', 'date_of_birth', 'profile_photo', 'password']
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = [
+            'id', 'username', 'email', 'phone_number', 'role', 'date_of_birth',
+            'profile_photo', 'password', 'address'
+        ]
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)

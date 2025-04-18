@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-# Custom User Model with roles, phone number, and address
+# Custom User Model with roles, phone number, address, and name
 class User(AbstractUser):
     ROLE_CHOICES = [
         ('client', 'Client'),
@@ -14,17 +14,26 @@ class User(AbstractUser):
     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
     phone_number = models.CharField(max_length=15, null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
+    name = models.CharField(max_length=255, null=True, blank=True)  # New name field
 
     def __str__(self):
-        return f"{self.username} ({self.role})"
+        return f"{self.name} ({self.role})"
 
-
-# Book model with borrow status and user relation
+# Book model with extra fields
 class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
     publication_date = models.DateField()
-    book_image = models.ImageField(upload_to='book_images/', null=True, blank=True)  # Changed from image_url
+
+    category = models.CharField(max_length=255, null=True, blank=True)
+    isbn = models.CharField(max_length=20, null=True, blank=True)
+    binding = models.CharField(max_length=50, null=True, blank=True)
+    publisher = models.CharField(max_length=255, null=True, blank=True)
+    edition = models.CharField(max_length=20, null=True, blank=True)
+    number_of_pages = models.PositiveIntegerField(null=True, blank=True)
+    language = models.CharField(max_length=50, null=True, blank=True)
+
+    book_image = models.ImageField(upload_to='book_images/', null=True, blank=True)
     is_borrowed = models.BooleanField(default=False)
     borrowed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
 

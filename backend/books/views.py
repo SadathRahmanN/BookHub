@@ -17,8 +17,10 @@ def books_api(request):
     """
     query = request.query_params.get('q', '')
     if query:
+        # Search by title or author
         books = Book.objects.filter(title__icontains=query) | Book.objects.filter(author__icontains=query)
     else:
+        # Fetch all books
         books = Book.objects.all()
     serializer = BookSerializer(books, many=True)
     return Response(serializer.data)
