@@ -24,7 +24,6 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
     publication_date = models.DateField()
-
     category = models.CharField(max_length=255, null=True, blank=True)
     isbn = models.CharField(max_length=20, null=True, blank=True)
     binding = models.CharField(max_length=50, null=True, blank=True)
@@ -32,10 +31,20 @@ class Book(models.Model):
     edition = models.CharField(max_length=20, null=True, blank=True)
     number_of_pages = models.PositiveIntegerField(null=True, blank=True)
     language = models.CharField(max_length=50, null=True, blank=True)
-
     book_image = models.ImageField(upload_to='book_images/', null=True, blank=True)
     is_borrowed = models.BooleanField(default=False)
     borrowed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title
+
+# BorrowedBook model
+class BorrowedBook(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    borrowed_at = models.DateTimeField(auto_now_add=True)
+    due_date = models.DateTimeField()
+    returned = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} borrowed {self.book.title}"

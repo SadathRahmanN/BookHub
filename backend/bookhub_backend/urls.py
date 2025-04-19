@@ -18,7 +18,13 @@ def serve_react(request, path=''):
 
 urlpatterns = [
     path('admin/', admin.site.urls),  # Django Admin Panel
-    path('api/', include('books.urls')),  # API routes for books and user management
-    path('', serve_react, name='react-home'),  # Serve React app at the root URL
-    path('<path:path>/', serve_react),  # Catch all other paths for React routes
+
+    # API routes for books and user management
+    path('api/', include('books.urls')),  # API endpoints are now under '/api/'
+
+    # Serve React app at the root URL
+    path('', serve_react, name='react-home'),
+
+    # Catch all other paths for React routing (client-side routing handled by React)
+    path('<path:path>/', serve_react),
 ]

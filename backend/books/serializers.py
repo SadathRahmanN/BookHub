@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import Book, User
+from .models import Book, User, BorrowedBook
 
 class BookSerializer(serializers.ModelSerializer):
-    # Optional: Show full image URL
+    # To display the full URL of the book image
     book_image_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -21,6 +21,9 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    # You might want to exclude password when returning user data (only for create/update)
+    password = serializers.CharField(write_only=True, required=False)
+
     class Meta:
         model = User
         fields = [
@@ -28,7 +31,7 @@ class UserSerializer(serializers.ModelSerializer):
             'profile_photo', 'password', 'address'
         ]
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},  # Make sure password is not exposed
         }
 
     def create(self, validated_data):
@@ -47,3 +50,14 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+
+class BorrowedBookSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()  # Display user's username instead of ID
+    book = serializers.StringRelatedField()  # Display book's title instead of ID
+
+    class Meta:
+        model = BorrowedBook
+        fields = '__all__'
+        read_only_fields = ['user', 'book']  # Read-only, since they should not be edited via this serializer
+

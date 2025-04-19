@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url  # Add this line to use the URL parser
+from datetime import timedelta  # For JWT expiration time
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',  # Django Rest Framework
+    'rest_framework_simplejwt',  # JWT Authentication
     'books',  # Books app for managing custom models and views
     'corsheaders',  # Allow cross-origin requests
 ]
@@ -60,8 +62,9 @@ ROOT_URLCONF = 'bookhub_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # React's index.html goes here
+        'DIRS': [BASE_DIR.parent / 'frontend' / 'build'],  # ✅ point to React build folder
         'APP_DIRS': True,
+
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -128,7 +131,7 @@ STATIC_URL = 'static/'
 
 # Static files directory for React build files
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # Location of React build's static assets
+    BASE_DIR.parent / 'frontend' / 'build' / 'static',  # ✅ serve React static files
 ]
 
 # Location for collectstatic to collect everything into one directory (used in production)
@@ -160,3 +163,29 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True  # Secure session cookies
     CSRF_COOKIE_SECURE = True  # Secure CSRF cookies
     X_FRAME_OPTIONS = "DENY"  # Prevent clickjacking
+
+
+# JWT Settings
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Access token expires in 15 minutes
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Refresh token expires in 7 days
+    'ROTATE_REFRESH_TOKENS': True,  # Option to rotate refresh tokens
+    'BLACKLIST_AFTER_ROTATION': True,  # Option to blacklist refresh tokens after rotation
+    'ALGORITHM': 'HS256',  # JWT signing algorithm
+    'SIGNING_KEY': SECRET_KEY,  # Signing key (use your SECRET_KEY)
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+}
+
+
+# REST Framework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # Use JWT for authentication
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',  # Default permission to be authenticated
+    ),
+}
+
